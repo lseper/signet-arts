@@ -1,2 +1,13 @@
+node_modules/
+dist/
+public/media/
+# source material: large, private, or not for publishing
+assets/raw/
 signet-arts-site-spec.md
 liveFashionPortraitsPhysicalBanner.jpg
+PortfolioPageLayoutExample.jpg
+PortfolioItemClickedSketchbookAnimationFlow.jpg
+.env
+.env.*
+!.env.example
+*.tsbuildinfo
