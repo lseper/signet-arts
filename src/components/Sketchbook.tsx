@@ -6,10 +6,13 @@ import { img, ratio } from '../lib/media';
 
 /* ------------------------------------------------------------------ cover */
 
+// shrink longer monograms so they stay inside the ring
+const MONO_SCALE = [1, 1, 0.62, 0.46, 0.36];
+
 function CoverFace({ brand, showCount = true }: { brand: Brand; showCount?: boolean }) {
   return (
     <div className="cover" style={{ ['--bk' as string]: brand.cover }}>
-      <span className="cover__mono" style={{ fontSize: brand.mono.length > 2 ? '.7em' : undefined }}>{brand.mono}</span>
+      <span className="cover__mono"><span style={{ fontSize: `${MONO_SCALE[Math.min(brand.mono.length, 4)]}em` }}>{brand.mono}</span></span>
       <span className="cover__name">{brand.name}</span>
       <span className="cover__sub">{brand.sub}</span>
       {showCount && <span className="cover__count">{brand.pieces.length} sketches</span>}
@@ -98,7 +101,7 @@ function pageSize(mobile: boolean) {
     return { pw, ph: Math.min(vh * 0.84, pw * 1.75) };
   }
   // two pages side by side, aspect 10:13, leave room for controls
-  const ph = Math.min(vh * 0.84, ((vw * 0.92) / 2) * 1.3);
+  const ph = Math.min(vh * 0.82, ((vw * 0.86) / 2) * 1.3);
   return { pw: ph / 1.3, ph };
 }
 
@@ -260,17 +263,16 @@ export function SketchbookModal({ brand, startPiece, origin, onClosed }: { brand
       </div>
 
       {!mobile && (
-        <nav className="sb__nav" aria-label="Turn pages">
-          <button onClick={() => flip('prev')} disabled={spread === 0 || !!turning} aria-label="Previous pages">
-            <svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" strokeWidth="1.8" /></svg>
+        <nav className="sb__nav" aria-label="Turn pages" style={{ ['--pw' as string]: `${pw}px` } as CSSProperties}>
+          <button className="sb__flip sb__flip--prev" onClick={() => flip('prev')} disabled={spread === 0} aria-label="Previous pages">
+            <svg viewBox="0 0 24 24"><path d="M15 4l-8 8 8 8" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </button>
-          <span>{spread + 1} / {spreads}</span>
-          <button onClick={() => flip('next')} disabled={spread >= spreads - 1 || !!turning} aria-label="Next pages">
-            <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" strokeWidth="1.8" /></svg>
+          <span className="sb__count">{spread + 1} / {spreads}</span>
+          <button className="sb__flip sb__flip--next" onClick={() => flip('next')} disabled={spread >= spreads - 1} aria-label="Next pages">
+            <svg viewBox="0 0 24 24"><path d="M9 4l8 8-8 8" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </button>
         </nav>
       )}
-      {mobile && <p className="sb__hint">Scroll to turn the pages</p>}
     </div>,
     document.body,
   );

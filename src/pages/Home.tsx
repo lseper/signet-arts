@@ -1,5 +1,10 @@
 import { Link } from 'react-router-dom';
-import { brands, contact, montages } from '../data/content';
+import { brands, montages } from '../data/content';
+
+const BYLINE = [
+  { name: 'Matthew Utsunomiya', url: 'https://www.instagram.com/mattdrawsmoments/' },
+  { name: 'Jamille Clostre', url: 'https://www.instagram.com/artisanaljam/' },
+];
 import { logoSrc } from '../lib/media';
 import { Arrow, Check, Cutout, Kicker, LoopVideo, Reveal } from '../components/ui';
 import { MontageShowcase } from '../components/MontageStack';
@@ -12,8 +17,8 @@ const STRIP = [
 
 export function TrustedBy() {
   return (
-    <section className="trusted" aria-label="Trusted by">
-      <p className="trusted__label">Trusted by</p>
+    <section className="trusted" aria-label="Our clients">
+      <p className="trusted__label">Our clients include:</p>
       <div className="trusted__row wrap">
         <span className="wordmark wordmark--celine">CELINE<small>PARIS</small></span>
         <span className="wordmark wordmark--khy">KHY<small>BY KYLIE JENNER</small></span>
@@ -39,10 +44,12 @@ export default function Home() {
             <Reveal delay={3}>
               <div className="hero__actions">
                 <Link to="/contact" className="btn btn--gold">Book your date <Arrow /></Link>
-                <Link to="/portfolio" className="text-link">See the portfolio</Link>
+                <Link to="/portfolio" className="text-link">See our portfolio</Link>
               </div>
-              <p className="handles">By{' '}
-                {contact.instagram.map((i, n) => <span key={i.handle}>{n > 0 && ' & '}<a href={i.url} target="_blank" rel="noopener noreferrer">{i.handle}</a></span>)}
+              <p className="byline">By{' '}
+                {BYLINE.map((a, n) => (
+                  <span key={a.url}>{n > 0 && ' and '}<span className="byline__name">{a.name}<a href={a.url} target="_blank" rel="noopener noreferrer" aria-label={`${a.name} on Instagram`}><svg className="ig" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" strokeWidth="1.8" /><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" strokeWidth="1.8" /><circle cx="17.4" cy="6.6" r="1.2" fill="currentColor" /></svg></a></span></span>
+                ))}
               </p>
             </Reveal>
           </div>
@@ -63,8 +70,8 @@ export default function Home() {
           </div>
           <div className="steps">
             {[
-              ['1', 'The reference', 'The artist’s assistant takes a quick reference photo of the guest, so no one has to stand still.'],
-              ['2', 'The drawing', 'The artist creates the portrait while the guest enjoys the event: their drink, their friends, the dance floor.'],
+              ['1', 'Drawn live', 'The artist draws each guest live, in the moment, right there at your event.'],
+              ['2', 'Part of the party', 'Guests watch their portrait come to life line by line, then head back to their drink, their friends, the dance floor.'],
               ['3', 'The keepsake', 'The finished portrait is ready to pick up before the end of the night, signed and sleeved.'],
             ].map(([n, h, t], i) => (
               <Reveal key={n} delay={i}><span className="step__num">{n}</span><h3>{h}</h3><p>{t}</p></Reveal>
